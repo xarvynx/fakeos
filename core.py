@@ -41,7 +41,8 @@ calc
 guessr
 time
 neofetch
-hack nasa
+todo
+hacknasa
     ''')
 
 #ls
