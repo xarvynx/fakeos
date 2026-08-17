@@ -2,7 +2,8 @@
 import time
 import random
 
-from utils import calc
+import config
+from utils import rm_, calc
 from games import guessr
 from tools import clear, neofetch, hacknasa, time_show, todo
 
@@ -13,15 +14,15 @@ def startup():
     time.sleep(0.2)
     print("Initialsing Kernel...")
     print(f"Welcome {current_user}")
+    print("")
 startup()
 
 def su():
-    global current_user
-    if current_user == "root":
+    if config.current_user == "root":
         print("Already Root!")
 
     else:
-        current_user = "root"
+        config.current_user = "root"
         print("You're now Root")
 
 #whoami
@@ -32,7 +33,9 @@ def whoami():
 def help_cmd():
     print('''
 Available Commands Are:
+
 help
+exit
 ls
 cd
 whoami
@@ -42,8 +45,10 @@ guessr
 time
 neofetch
 todo
+rm -rf /
 hacknasa
     ''')
+
 
 #ls
 def ls():
@@ -70,13 +75,13 @@ def cd():
 
 
 commands = {"ls": ls, "clear": clear, "cd": cd, "help": help_cmd, "neofetch": neofetch, "hacknasa": hacknasa, "whoami": whoami, "su": su, "time": time_show,
-"guessr": guessr, "calc": calc, "todo": todo
+            "guessr": guessr, "calc": calc, "todo": todo, "rm -rf /": rm_
  }
 
 
 def main():
     while True:
-        user_input = input(f"{current_user}@fakeos> ").lower()
+        user_input = input(f"{config.current_user}@fakeos> ").lower()
         if user_input == "exit":
             print("Shutting Down FakeOS")
             break
@@ -89,5 +94,5 @@ def main():
             command_function()
 
         else:
-            print(f"'{user_input}' is not a calid command enter 'help' for a list of available commands!")
+            print(f"'{user_input}' is not a valid command enter 'help' for a list of available commands!")
 main()

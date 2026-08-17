@@ -1,3 +1,6 @@
+import config
+import time
+
 #Calculator:
 def calc():
     print("Basic Calculator")
@@ -33,4 +36,52 @@ def calc():
                 print("Invalid operator!")
 
         except ValueError:
-            print("Please enter valid numbers.")
+                print("Please enter valid numbers.")
+
+
+
+def rm_():
+    if config.current_user == "guest":
+        print("You need to be root to Perform this function!")
+    
+    elif config.current_user == "root":
+        print('''
+Recursively Removing /
+Deleting /etc/
+Deleting /boot/
+Deleting /bin/
+Deleting /boot/
+Deleting /dev/
+Unmounting Partitons...
+              ''')
+
+        time.sleep(2)
+        print("System Halted. Unknown Error Occured!")
+        time.sleep(2)
+        print("Recovering.....")
+        time.sleep(5)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
