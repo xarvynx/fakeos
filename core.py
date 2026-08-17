@@ -7,13 +7,12 @@ from utils import rm_, calc
 from games import guessr
 from tools import clear, neofetch, hacknasa, time_show, todo
 
-current_user = "guest"
 
 def startup():
     print("Turning on FakeOS...")
     time.sleep(0.2)
     print("Initialsing Kernel...")
-    print(f"Welcome {current_user}")
+    print(f"Welcome {config.current_user}")
     print("")
 startup()
 
@@ -27,7 +26,7 @@ def su():
 
 #whoami
 def whoami():
-    print(f"{current_user}")
+    print(f"{config.current_user}")
 
 #help
 def help_cmd():

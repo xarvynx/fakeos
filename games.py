@@ -5,6 +5,12 @@ def guessr():
     attempts = 0
     while True:
         guess_1 = int(input("Enter Your Guess or 'exit' : "))
+        if guess_1 == exit:
+            break
+
+        else:
+            continue
+
         attempts += 1
         try:
             guess = int(guess_1)
