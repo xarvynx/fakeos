@@ -11,12 +11,12 @@
 - Filesystem (Coming soon in ZFS.py)
 
 ## Installation
-'''bash
+```bash
 git clone
 https://github.com/xarvynx/fakeos.git
 cd fakeos
 python3 core.py
-
+```
 ## Commands
 --Available Commands Are:
 
