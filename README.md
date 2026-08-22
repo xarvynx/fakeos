@@ -31,7 +31,8 @@ python3 core.py
 - time
 - neofetch
 - todo
-##Fun commands (doesn't affect host pc)
+
+## Fun commands (doesn't affect host pc)
 - rm -rf /
 - hacknasa
 
