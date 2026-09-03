@@ -58,15 +58,6 @@ mnt
 etc
     ''')
 
-def hacknasa():
-    time.sleep(1)
-    print("Initialsing Nmap, msf console, ")
-    time.sleep(1)
-    print("Launching attack!")
-    time.sleep(0.5)
-    print("Gaining access...")
-    time.sleep(0.5)
-    print("Err. Occured! No Internet Detected")
 
 #cd
 def cd():
