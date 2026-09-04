@@ -1,2 +1,3 @@
 #DO NOT EDIT WITHOUT LOOKING OTHER FILES OR SOME TOOLS MAY BREAK
 current_user = "guest"
+password = "root"

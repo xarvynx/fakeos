@@ -1,31 +1,34 @@
-import random
-def guessr():
-    secret = random.randint(1, 100)
-    print("Guessr* -")
-    attempts = 0
-    while True:
-        guess_1 = int(input("Enter Your Guess or 'exit' : "))
-        if guess_1 == exit:
-            break
+import random 
 
-        else:
-            continue
-
-        attempts += 1
-        try:
-            guess = int(guess_1)
-            if guess == secret:
-                print("You've Won 1 Million Robux YAYYYY and a free virus")
-                print("Tries Took", attempts)
-                break
-            elif guess < secret:
-                print("Too Lowwww")
-
-            elif guess > secret:
-                print("Too Highhh")
-            else:
-                print("Try Again!")
+def guessr(): 
+    secret = random.randint(1, 100) 
+    print("Guessr* -") 
+    attempts = 0 
+    
+    while True: 
+        attempts += 1 
+        guess = input("Enter a Guess or 'exit': ") 
         
-        except ValueError:
-            print("Enter an Number (Real Number)")
+        if guess == "exit": 
+            break 
+        else:
+            try:
+                guess = int(guess) 
+            
+                if guess == secret: 
+                    print(f"You won!, Attempts : {attempts}") 
+                    break  
+                
+                elif guess > secret: 
+                    print("too high") 
+                
+                elif guess < secret: 
+                    print("too low") 
+    
+            except ValueError:
+                print("Numbers Only")
+
+
+
+            
 

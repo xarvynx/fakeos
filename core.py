@@ -21,8 +21,13 @@ def su():
         print("Already Root!")
 
     else:
-        config.current_user = "root"
-        print("You're now Root")
+        password = str(input("Enter Password: "))
+        if password == config.password:
+            config.current_user = "root"
+            print("You're now Root")
+
+        else:
+            print("Password Doesn't Match")
 
 #whoami
 def whoami():
