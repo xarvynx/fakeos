@@ -1,7 +1,8 @@
 # tools.py
 import time
 import os
-
+import datetime
+import socket
 
 def clear():
     if os.name == 'nt':
@@ -86,3 +87,17 @@ def hacknasa():
 
 def time_show():
     print(time.ctime())
+
+
+def portscanner():
+    target = "127.0.0.1"
+
+    for port in range(1, 1025):
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock.settimeout(0.5)
+        result = sock.connect_ex((target, port))
+        if result == 0:
+            print(f"Port {port} is OPEN.")
+
+        sock.close()
+

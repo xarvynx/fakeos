@@ -5,7 +5,7 @@ import random
 import config
 from utils import rm_, calc
 from games import guessr
-from tools import clear, neofetch, hacknasa, time_show, todo
+from tools import clear, neofetch, hacknasa, time_show, todo, portscanner
 
 
 def startup():
@@ -49,6 +49,7 @@ guessr
 time
 neofetch
 todo
+portscanner(localhost only)
 rm -rf /
 hacknasa
     ''')
@@ -70,7 +71,7 @@ def cd():
 
 
 commands = {"ls": ls, "clear": clear, "cd": cd, "help": help_cmd, "neofetch": neofetch, "hacknasa": hacknasa, "whoami": whoami, "su": su, "time": time_show,
-            "guessr": guessr, "calc": calc, "todo": todo, "rm -rf /": rm_
+            "guessr": guessr, "calc": calc, "todo": todo, "rm -rf /": rm_, "portscanner": portscanner
  }
 
 
