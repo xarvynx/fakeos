@@ -1,6 +1,5 @@
 #imports
 import time
-import random
 
 import config
 from utils import rm_, calc
@@ -14,7 +13,6 @@ def startup():
     print("Initialsing Kernel...")
     print(f"Welcome {config.current_user}")
     print("")
-startup()
 
 def su():
     if config.current_user == "root":
@@ -91,4 +89,8 @@ def main():
 
         else:
             print(f"'{user_input}' is not a valid command enter 'help' for a list of available commands!")
-main()
+
+
+if __name__ == "__main__":
+    startup()
+    main()
