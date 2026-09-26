@@ -75,21 +75,25 @@ commands = {"ls": ls, "clear": clear, "cd": cd, "help": help_cmd, "neofetch": ne
 
 def main():
     while True:
-        user_input = input(f"{config.current_user}@fakeos> ").lower()
-        if user_input == "exit":
-            print("Shutting Down FakeOS")
-            break
+        try:
+            
+            user_input = input(f"{config.current_user}@fakeos> ").lower()
+            if user_input == "exit":
+                print("Shutting Down FakeOS")
+                break
         
-        if not user_input:
-            continue
+            if not user_input:
+                continue
         
-        if user_input in commands:
-            command_function = commands[user_input]
-            command_function()
+            if user_input in commands:
+                command_function = commands[user_input]
+                command_function()
 
-        else:
-            print(f"'{user_input}' is not a valid command enter 'help' for a list of available commands!")
+            else:
+                print(f"'{user_input}' is not a valid command enter 'help' for a list of available commands!")
 
+        except KeyboardInterrupt:
+            print("\nThy may kindly enter 'exit' to depart.")
 
 if __name__ == "__main__":
     startup()
