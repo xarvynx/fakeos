@@ -1,0 +1,15 @@
+{
+  "root": {
+    "home": {
+      "guest": {
+        "text.txt": "\"hello\""
+      }
+    },
+    "etc": {},
+    "tmp": {}
+  },
+  "cwd": [
+    "home",
+    "guest"
+  ]
+}
