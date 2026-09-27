@@ -1,0 +1,25 @@
+# FakeOS configuration and secrets
+fakeos_config.json
+fakeos_todo.json
+fakeos_fs.json
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environments
+venv/
+env/
+.env
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db

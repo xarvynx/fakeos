@@ -2,7 +2,10 @@
   "root": {
     "home": {
       "guest": {
-        "text.txt": "\"hello\""
+        "text.txt": "hello",
+        "dir1": {
+          "file1": "content"
+        }
       }
     },
     "etc": {},

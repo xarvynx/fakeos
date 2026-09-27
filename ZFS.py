@@ -82,6 +82,8 @@ class FakeFS:
     def ls(self, path=""):
         node = self._get_node(self._resolve(path))
         if isinstance(node, dict):
+            if not node:
+                return "(empty)"
             return "  ".join(sorted(node.keys()))
         raise FakeFSError("not a directory")
 
@@ -137,6 +139,9 @@ class FakeFS:
         parent, leaf = self._get_parent(self._resolve(name))
         if leaf not in parent:
             raise FakeFSError("no such file or directory")
+        node = parent[leaf]
+        if isinstance(node, dict) and node:
+            raise FakeFSError("directory not empty (use recursive delete if needed)")
         del parent[leaf]
         self.save()
 
@@ -147,13 +152,13 @@ class FakeFS:
             for key in sorted(node.keys()):
                 lines.append("  " * indent + key)
                 if isinstance(node[key], dict):
-                    lines.extend(self.tree_lines(node[key], indent + 1))
+                    lines.extend(self._tree_lines(node[key], indent + 1))
         return "\n".join(lines)
 
-    def tree_lines(self, node, indent):
+    def _tree_lines(self, node, indent):
         lines = []
         for key in sorted(node.keys()):
             lines.append("  " * indent + key)
             if isinstance(node[key], dict):
-                lines.extend(self.tree_lines(node[key], indent + 1))
+                lines.extend(self._tree_lines(node[key], indent + 1))
         return lines
