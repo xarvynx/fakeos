@@ -1,5 +1,0 @@
-{
-  "openrouter_api_key": "sk-or-v1-NEW-KEY-HERE",
-  "openrouter_model": "openai/gpt-3.5-turbo",
-  "math_temperature": 0.1
-}

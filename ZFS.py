@@ -135,13 +135,18 @@ class FakeFS:
             raise FakeFSError("is a directory")
         return node
 
-    def rm(self, name):
+    def rm(self, name, recursive=False):
         parent, leaf = self._get_parent(self._resolve(name))
         if leaf not in parent:
             raise FakeFSError("no such file or directory")
         node = parent[leaf]
-        if isinstance(node, dict) and node:
-            raise FakeFSError("directory not empty (use recursive delete if needed)")
+        if isinstance(node, dict):
+            if node and not recursive:
+                raise FakeFSError("directory not empty (use -r for recursive delete)")
+            # Recursive delete: remove all contents first
+            if node and recursive:
+                for child in list(node.keys()):
+                    self.rm(f"{name}/{child}", recursive=True)
         del parent[leaf]
         self.save()
 

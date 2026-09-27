@@ -8,6 +8,11 @@ import os
 import requests
 from typing import Optional
 
+# Import visual components from visuals
+from visuals import (C, S, ICON, colorize, gradient, spinner_animation, 
+                     progress_bar, clear_screen, print_box)
+
+# Config file path
 CONFIG_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "fakeos_config.json")
 DEFAULT_MODEL = "openai/gpt-3.5-turbo"
 API_URL = "https://openrouter.ai/api/v1/chat/completions"
@@ -72,6 +77,7 @@ SYSTEM_PROMPT = """You are a mathematics tutor. Provide solutions in textbook fo
 
 > **Check**: 2(4) + 5 = 8 + 5 = 13 ✓"""
 
+
 def load_config() -> dict:
     if os.path.exists(CONFIG_FILE):
         try:
@@ -81,6 +87,7 @@ def load_config() -> dict:
             return {}
     return {}
 
+
 def save_config(config: dict):
     try:
         with open(CONFIG_FILE, "w") as f:
@@ -88,23 +95,25 @@ def save_config(config: dict):
     except OSError:
         pass
 
+
 def get_api_key() -> str:
     config = load_config()
     key = config.get("openrouter_api_key", "").strip()
     if key:
         return key
     # First time - ask user
-    print("🔑 OpenRouter API Key Required")
-    print("Get one at: https://openrouter.ai/keys")
-    key = input("Enter your OpenRouter API key: ").strip()
+    print(f'{S.INFO}{ICON.KEY} OpenRouter API Key Required{C.R}')
+    print(f'{S.DIM}Get one at: https://openrouter.ai/keys{C.R}')
+    key = input(f'{S.CMD}Enter your OpenRouter API key: {C.R}').strip()
     if not key:
         raise ValueError("API key cannot be empty")
     config["openrouter_api_key"] = key
     config.setdefault("openrouter_model", DEFAULT_MODEL)
     config.setdefault("math_temperature", 0.1)
     save_config(config)
-    print("✅ Key saved securely (gitignored)")
+    print(f'{S.OK}{ICON.CHECK} Key saved securely (gitignored){C.R}')
     return key
+
 
 def solve_math(question: str, retry_count: int = 0) -> str:
     api_key = get_api_key()
@@ -139,79 +148,98 @@ def solve_math(question: str, retry_count: int = 0) -> str:
             # Invalid key - clear it and retry once
             config["openrouter_api_key"] = ""
             save_config(config)
-            print("❌ Invalid API key. Please re-enter.")
+            print(f'{S.ERR}{ICON.CROSS} Invalid API key. Please re-enter.{C.R}')
             return solve_math(question, retry_count + 1)
-        return f"❌ API Error ({e.response.status_code}): {e.response.text[:200]}"
+        return f'{S.ERR}{ICON.CROSS} API Error ({e.response.status_code}): {e.response.text[:200]}{C.R}'
     except requests.exceptions.Timeout:
-        return "❌ Request timed out. Try a simpler question or check your connection."
+        return f'{S.ERR}{ICON.CROSS} Request timed out. Try a simpler question or check your connection.{C.R}'
     except requests.exceptions.RequestException as e:
-        return f"❌ Network Error: {e}"
+        return f'{S.ERR}{ICON.CROSS} Network Error: {e}{C.R}'
     except (KeyError, IndexError):
-        return "❌ Unexpected API response format"
+        return f'{S.ERR}{ICON.CROSS} Unexpected API response format{C.R}'
+
 
 def math_cli():
-    print("🧮 FakeOS Math Solver (OpenRouter)")
-    print("Type 'exit' to quit, 'config' to change model, 'newkey' to change API key, 'clear' to clear screen")
-    print("-" * 50)
+    clear_screen()
+    print_box('AI MATH SOLVER', [
+        f'{S.CMD}Ask any math question{C.R}',
+        f'{S.CMD}Uses OpenRouter API (LLM){C.R}',
+        f'{S.CMD}Textbook format with Unicode math{C.R}',
+    ], 55, ICON.MATH)
+    print()
+    
+    print(f'{S.INFO}{ICON.MATH} FakeOS Math Solver (OpenRouter){C.R}')
+    print(f'{S.DIM}Commands: exit, config, newkey, clear, help{C.R}')
+    print(f'{S.DIM}{"─" * 50}{C.R}')
+    print()
 
     while True:
         try:
-            question = input("\n📐 Math Question: ").strip()
+            question = input(f'{S.CMD}Math{S.DIM}> {C.R}').strip()
         except (EOFError, KeyboardInterrupt):
-            print("\nExiting...")
+            print(f'\n{S.INFO}Exiting...{C.R}')
             break
 
         if not question:
             continue
         if question.lower() in ("exit", "quit", "q"):
+            print(f'{S.OK}{ICON.CHECK} Returning to FakeOS...{C.R}')
             break
         if question.lower() == "config":
             config = load_config()
-            print(f"Current model: {config.get('openrouter_model', DEFAULT_MODEL)}")
-            print("Popular models:")
-            print("  • anthropic/claude-3.5-sonnet (default, best for math)")
-            print("  • openai/gpt-4o")
-            print("  • google/gemini-pro")
-            print("  • deepseek/deepseek-chat")
-            print("  • meta-llama/llama-3.1-70b-instruct")
-            print("See all: https://openrouter.ai/models")
-            new_model = input("New model (Enter to keep): ").strip()
+            print(f'{S.INFO}Current model: {S.CMD}{config.get("openrouter_model", DEFAULT_MODEL)}{C.R}')
+            print(f'{S.INFO}Popular models:{C.R}')
+            print(f'  {S.CMD}• openai/gpt-3.5-turbo{C.R} (fast, reliable)')
+            print(f'  {S.CMD}• openai/gpt-4o{C.R} (smartest)')
+            print(f'  {S.CMD}• anthropic/claude-3.5-sonnet{C.R} (great for math)')
+            print(f'  {S.CMD}• deepseek/deepseek-chat{C.R} (free tier)')
+            print(f'  {S.CMD}• meta-llama/llama-3.1-70b{C.R} (open source)')
+            print(f'{S.DIM}See all: https://openrouter.ai/models{C.R}')
+            new_model = input(f'{S.CMD}New model (Enter to keep): {C.R}').strip()
             if new_model and new_model.lower() not in ("help", "exit", "quit", "clear", "config", "newkey"):
                 config["openrouter_model"] = new_model
                 save_config(config)
-                print(f"✅ Model updated to {new_model}")
+                print(f'{S.OK}{ICON.CHECK} Model updated to {S.CMD}{new_model}{C.R}')
             elif new_model:
-                print("❌ Invalid model name")
+                print(f'{S.ERR}{ICON.CROSS} Invalid model name{C.R}')
             continue
         if question.lower() == "newkey":
             config = load_config()
-            print("🔑 Enter new OpenRouter API key:")
-            print("Get one at: https://openrouter.ai/keys")
-            new_key = input("New API key: ").strip()
+            print(f'{S.INFO}{ICON.KEY} Enter new OpenRouter API key:{C.R}')
+            print(f'{S.DIM}Get one at: https://openrouter.ai/keys{C.R}')
+            new_key = input(f'{S.CMD}New API key: {C.R}').strip()
             if new_key:
                 config["openrouter_api_key"] = new_key
                 save_config(config)
-                print("✅ API key updated!")
+                print(f'{S.OK}{ICON.CHECK} API key updated!{C.R}')
             else:
-                print("❌ Key cannot be empty")
+                print(f'{S.ERR}{ICON.CROSS} Key cannot be empty{C.R}')
             continue
         if question.lower() == "clear":
-            os.system("cls" if os.name == "nt" else "clear")
+            clear_screen()
+            print_box('AI MATH SOLVER', [
+                f'{S.CMD}Ask any math question{C.R}',
+                f'{S.CMD}Uses OpenRouter API (LLM){C.R}',
+                f'{S.CMD}Textbook format with Unicode math{C.R}',
+            ], 55, ICON.MATH)
+            print()
             continue
         if question.lower() == "help":
-            print("""
-Commands:
-  <any math question>  - Get textbook-format solution
-  config               - Change AI model
-  newkey               - Change OpenRouter API key
-  clear                - Clear screen
-  help                 - Show this help
-  exit                 - Return to FakeOS
-""")
+            print_box('MATH SOLVER COMMANDS', [
+                f'{S.CMD}<any math question>{C.R}  {S.DIM}Get textbook-format solution{C.R}',
+                f'{S.CMD}config{C.R}               {S.DIM}Change AI model{C.R}',
+                f'{S.CMD}newkey{C.R}               {S.DIM}Change OpenRouter API key{C.R}',
+                f'{S.CMD}clear{C.R}                {S.DIM}Clear screen{C.R}',
+                f'{S.CMD}help{C.R}                 {S.DIM}Show this help{C.R}',
+                f'{S.CMD}exit{C.R}                 {S.DIM}Return to FakeOS{C.R}',
+            ], 55, ICON.INFO)
             continue
 
-        print("\n🤔 Thinking...")
+        print()
+        spinner_animation('Thinking...', 0.5)
         answer = solve_math(question)
-        print("\n" + "=" * 50)
+        print()
+        print(f'{S.ACCENT}{"═" * 50}{C.R}')
         print(answer)
-        print("=" * 50)
+        print(f'{S.ACCENT}{"═" * 50}{C.R}')
+        print()
